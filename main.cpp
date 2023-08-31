@@ -1,10 +1,14 @@
 #include <iostream>
 #include <Windows.h>
 #include <conio.h>
-#include "input.h"
-#include "menu.h"
 #include "player.h"
-#include "config.h"
+#include "input.h"
+#include "map.h"
+#include "menu.h"
+#include "game.h"
+#include "loop.h"
+
+
 
 using namespace std;
 
@@ -25,13 +29,16 @@ int main(){
     //FIM: COMANDOS PARA REPOSICIONAR O CURSOR NO IN�CIO DA TELA
     ///ALERTA: N�O MODIFICAR O TRECHO DE C�DIGO, ACIMA.
 
-    Game game;
-    Player player1;
+    Loop loop;
+    Player player;
+    Player* pointerPlayer = &player;
     Menu menu;
     Input input;
+    Map map;
+    Game game;
 
     menu.imprime_menu();
-    game.mainLoop(menu);
+    loop.mainLoop(coord, menu, input, pointerPlayer, map, game);
 
 
 

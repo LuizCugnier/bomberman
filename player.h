@@ -2,7 +2,6 @@ using namespace std;
 
 struct Player
 {
-    int pX = 5;
-    int pY = 5;
+    int pX, pY = 5;
 
 };

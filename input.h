@@ -4,5 +4,4 @@ struct Input{
     
     char key;
 
-    
 };
