@@ -6,20 +6,22 @@
 
 using namespace std;
 
-Player player;
-Player* pPlayer = &player;
-Enemy enemy;
-Enemy * pEnemy = &enemy;
-Bomb bomb;
-Bomb* pBomb = &bomb;
+Player player; //Cria a struct do jogador
+Player* pPlayer = &player; //Cria um ponteiro para o jogador
+Enemy enemy; //Cria a struct do inimigo
+Enemy * pEnemy = &enemy; //Cria um ponteiro para o inimigo
+Bomb bomb; //Cria a struct da bomba
+Bomb* pBomb = &bomb; //Cria um ponteiro para a bomba
+
 
 struct Map
-{
-    int mapX = 15;
+{   
+    //Declara o tamanho do mapa
+    int mapX = 15; 
     int mapY = 15;
 
     
-
+    //Função que imprime o mapa no jogo
     void printMap(int (&map)[15][15]){
         for(int i=0;i<mapX;i++){
             for(int j=0;j<mapY;j++){

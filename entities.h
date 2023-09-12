@@ -4,23 +4,25 @@
 #include <iostream>
 #include <Windows.h>
 
-struct Player
+struct Player //Struct para o jogador
 {
-    int playerX = 1;
+    //Posição inicial donjogador
+    int playerX = 1; 
     int playerY = 2;
 
 
 };
 
-struct Enemy
+struct Enemy //Struct para o inimigo
 {
+    //Posição inicial dos inimigos
     int enemy1X = 1, enemy1Y = 1;
     int enemy2X = 13, enemy2Y = 13;
 
-    int enemyMoveCounter;
+    int enemyMoveCounter; //Variável para contar os movimentos do inimigo
 };
 
-struct Bomb
+struct Bomb //Struct para a bomba
 {
     bool flagBomb = false; //Variável para verificar se já existe bomba
     int bombX, bombY; //localização da bomba

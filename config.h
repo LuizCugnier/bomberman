@@ -7,9 +7,10 @@
 
 using namespace std;
 
-struct Config
+struct Config //Struct para guardar as configurações do jogo
 {
-    BOOL setCursor(int x, int y){
+    //Função que configura o display do jogo e retorna a posição do cursor
+    bool setCursor(int x, int y){
         HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
         CONSOLE_CURSOR_INFO cursorInfo;
         GetConsoleCursorInfo(out, &cursorInfo);
