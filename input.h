@@ -8,20 +8,21 @@
 
 using namespace std;
 
-clock_t inicio, fim; //declaração das entidades de contagem de tempo para armazenar inicio e fim do período da bomba
+clock_t inicio, fim; //Declaração das entidades de contagem de tempo para armazenar inicio e fim do período da bomba
 
-struct Input
+struct Input //Struct para as entradas do usuário
 {
-    char inputKey;
+    char inputKey; //Variável para a entrada do usuário
 
     
-
+    //Função que recebe uma entrada do menu e retorna a escolha
     int menuChoise(){
         int inputKey;
         cin >> inputKey;
         return inputKey;
     }
 
+    //Função que posiciona uma bomba no mapa
     void placeBomb(int (&map)[15][15], int x, int y, bool *flagbomb){
         //cout << "teste";
         if (!*flagbomb){
@@ -31,6 +32,8 @@ struct Input
         }
     }
 
+
+    //Função que cuida da logica de explosão da bomba
     void bombExplode(int (&gameMap)[15][15]){
         if (bomb.flagBomb) {
             fim = clock();
@@ -53,6 +56,7 @@ struct Input
         }
     }
 
+    //Função para verificar colisões no mapa
     bool collisionCheck(int map[15][15], int x, int y) {
         if (map[x][y] == 0 || map[x][y] == 4) {
             return true;
@@ -61,6 +65,7 @@ struct Input
         }
     }
 
+    //Função para os movimentos dos inimigos
     void enemyMoviments(int m[15][15], int &enemyX, int &enemyY) {
         int dir = rand() % 4; // escolhe uma direção aleatória
         int passo = rand() % 3 + 1; // escolhe um número aleatório de passos
@@ -80,8 +85,7 @@ struct Input
         }
     }
 
-    
-
+    //Função que recebe as entradas do usuário e movimenta de acordo
     void moviments(int (&gameMap)[15][15], bool &gameRunning){
         if (_kbhit()){
             inputKey = _getch();
@@ -115,7 +119,7 @@ struct Input
                 break;
 
                 case 32:
-                    //coloca bomba
+                    //Verifica se tem bomba no mapa antes de posicionar
                     if (!bomb.flagBomb){
                         inicio = clock();
                         pBomb->bombX = pPlayer->playerX;
@@ -125,7 +129,7 @@ struct Input
                 break;
 
                 case '0':
-                    gameRunning = false;
+                    gameRunning = false; //Termina o jogo
                 break;
             }
         }
