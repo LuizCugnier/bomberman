@@ -1,4 +1,4 @@
 # BOMBERMAN
 Trabalho algoritmos e programação - Bomberman
 
-Alunos: Luiz Augusto e Lucas Borba
+Alunos: Luiz Augusto Cugnier Neto e Lucas Carvalho de Borba
