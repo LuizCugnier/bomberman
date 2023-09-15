@@ -4,7 +4,9 @@
 #include <iostream>
 #include <conio.h>
 
+
 #include "map.h"
+#include "menu.h"
 
 using namespace std;
 
@@ -13,14 +15,14 @@ clock_t inicio, fim; //Declaração das entidades de contagem de tempo para arma
 struct Input //Struct para as entradas do usuário
 {
     char inputKey; //Variável para a entrada do usuário
+    char inputMenu; //Variável para as escolhas do menu
 
-    
-    //Função que recebe uma entrada do menu e retorna a escolha
+    /*Função que recebe uma entrada do menu e retorna a escolha
     int menuChoise(){
         int inputKey;
         cin >> inputKey;
         return inputKey;
-    }
+    }*/
 
     //Função que posiciona uma bomba no mapa
     void placeBomb(int (&map)[15][15], int x, int y, bool *flagbomb){
@@ -86,7 +88,7 @@ struct Input //Struct para as entradas do usuário
     }
 
     //Função que recebe as entradas do usuário e movimenta de acordo
-    void moviments(int (&gameMap)[15][15], bool &gameRunning){
+    void moviments(Menu menu, int (&gameMap)[15][15], bool &gameRunning){
         if (_kbhit()){
             inputKey = _getch();
 
@@ -130,6 +132,7 @@ struct Input //Struct para as entradas do usuário
 
                 case '0':
                     gameRunning = false; //Termina o jogo
+                    menu.mainMenu();
                 break;
             }
         }

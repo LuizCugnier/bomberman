@@ -45,6 +45,7 @@ struct Menu
             * Luiz Augusto Cugnier Neto
             * Lucas Carvalho de Borba
         )";
+        cout << "\nAperte '0' para voltar ao menu.";
 
     }
 };

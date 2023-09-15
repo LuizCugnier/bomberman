@@ -1,64 +1,79 @@
-#include "menu.h"
-#include "input.h"
-#include "map.h"
-#include "config.h"
+#ifndef GAME_H
+#define GAME_H
+
 
 using namespace std;
 
-Config config; //Cria a struct das configurações
-Map map; //Cria a struct map (no momento apenas tem a função para imprimir o mapa pois o mapa é declarado na main e passado como parâmetro)
-Menu menu; //Cria a struct do menu 
-Input input; // Cria a struct das entradas do usuário
+#include "map.h"
 
 
 struct Game //Struct do jogo
 {
+    bool menuRunning = true;
     bool gameRunning = true; //Variável que indica se o jogo está rodando
 
     //Loop principal do jogo
-    void mainLoop(int (&gameMap)[15][15]){
+    void mainLoop(Config config, Map map, Menu menu, Input input, int (&gameMap)[15][15]){
         
         menu.mainMenu(); //Chama a função para imprimir o menu
 
-        switch (input.menuChoise())
-        {
-        case 1:
-            newGame(gameMap);//Começa um novo jogo
-            break;
-        case 2:
-            //Continua um jogo ativo
-            break;
-        case 3:
-            menu.sobreMenu();
-            break;
-        default:
-            break;
+        while (menuRunning){
+            if (_kbhit()){  
+                input.inputMenu = _getch();
+
+                switch (input.inputMenu)
+                {
+                    case '0':
+                        menu.mainMenu(); //Imprime o menu 
+                        break;
+                    case '1':
+                        newGame(config, map, menu, input, gameMap);//Começa um novo jogo
+                        break;
+                    case '2':
+                        //Continua um jogo ativo
+                        break;
+                    case '3':
+                        menu.sobreMenu();//Informações do jogo
+                        break;
+                    case '4':
+                        //função termina jogo
+                        endGame();
+                    default:
+                        break;
+                }
+            }
         }
 
 
     }
 
+    void endGame(){
+        menuRunning = false; //Termina o jogo
+        system("cls");
+    }
+
     //Função que inicia um novo jogo
-    void newGame(int (&gameMap)[15][15]){
-        gameLoop(gameMap); //Chama o loop do jogo
+    void newGame(Config config, Map map, Menu menu, Input input, int (&gameMap)[15][15]){
+        gameRunning = true;
+        gameLoop(config, map, menu, input, gameMap); //Chama o loop do jogo
     }
 
     //Funcão do loop do jogo
-    void gameLoop(int (&gameMap)[15][15]){
+    void gameLoop(Config config, Map map, Menu menu, Input input, int (&gameMap)[15][15]){
         system("cls");
 
         while (gameRunning)
         {
             config.setCursor(0, 0); //Chama a função dentro da struct config, que configura o cursor
             map.printMap(gameMap); //Chama a função para imprimir o mapa
-            input.moviments(gameMap, gameRunning); //Chama função que verifica as entradas do usuário
+            input.moviments(menu, gameMap, gameRunning); //Chama função que verifica as entradas do usuário
             input.bombExplode(gameMap); //Chama a função que cuida da explosão da bomba
-            gameLogic(gameMap); // Chama a função que cuida da lógica do jogo
+            gameLogic(input, gameMap); // Chama a função que cuida da lógica do jogo
         }
     }
     
     //Função que cuida da lógica do jogo
-    void gameLogic(int (&gameMap)[15][15]){
+    void gameLogic(Input input, int (&gameMap)[15][15]){
         pEnemy->enemyMoveCounter++;
         //cout << pEnemy->enemyMoveCounter;
 
@@ -70,9 +85,13 @@ struct Game //Struct do jogo
         }
 
         if (gameMap[pPlayer->playerX][pPlayer->playerY] == 4) { // condição de fim : explodiu com a bomba
+            cout << "\nVOce Perdeu!!!!";
+            Sleep(2000);
             gameRunning = false;
         }
         if ((pPlayer->playerX == pEnemy->enemy1X && pPlayer->playerY == pEnemy->enemy1Y) || (pPlayer->playerX == pEnemy->enemy2X && pPlayer->playerY == pEnemy->enemy2Y)) {
+            cout << "\nVOce Perdeu!!!!";
+            Sleep(2000);
             gameRunning = false; // o jogador colidiu com um inimigo
         }
         if (gameMap[pEnemy->enemy1X][pEnemy->enemy1Y] == 4) {
@@ -88,3 +107,4 @@ struct Game //Struct do jogo
     }
 
 };
+#endif
