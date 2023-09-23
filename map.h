@@ -4,6 +4,8 @@
 
 #include "entities.h"
 
+#include <fstream>
+
 using namespace std;
 
 Player player; //Cria a struct do jogador
@@ -20,6 +22,28 @@ struct Map
     int mapX = 15; 
     int mapY = 15;
 
+    //Função para carregar o mapa
+    void loadMap(int (&map)[15][15]){
+        string mapFile = "map.txt";
+        ifstream file;
+
+        file.open(mapFile);
+
+        if (file.is_open()){
+            for (int i = 0; i < mapX; i++){
+                for (int j = 0;j < mapY; j++){
+                    char c;
+                    file >> c;
+                    map[i][j] = (int)c - 48;
+
+                }
+            }
+            file.close();
+        } else {
+            cout << "Erro ao carregar";
+        }   
+        
+    }
     
     //Função que imprime o mapa no jogo
     void printMap(int (&map)[15][15]){

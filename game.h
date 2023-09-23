@@ -50,6 +50,7 @@ struct Game //Struct do jogo
         while (gameRunning)
         {
             config.setCursor(0, 0); //Chama a função dentro da struct config, que configura o cursor
+            map.loadMap(gameMap);
             map.printMap(gameMap); //Chama a função para imprimir o mapa
             input.moviments(gameMap, gameRunning); //Chama função que verifica as entradas do usuário
             input.bombExplode(gameMap); //Chama a função que cuida da explosão da bomba
