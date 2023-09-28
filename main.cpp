@@ -7,7 +7,13 @@
 */
 
 #include <time.h>
+
+#include "menu.h"
+#include "input.h"
+
+#include "config.h"
 #include "game.h"
+
 
 
 using namespace std;
@@ -32,8 +38,12 @@ int main(){
     };
 
     Game game; //Inicia a struct referente ao jogo
-    
-    game.mainLoop(gameMap); //Chama a função principal do jogo passando o mapa 
+    Config config; //Cria a struct das configurações
+    Map map; //Cria a struct map (no momento apenas tem a função para imprimir o mapa pois o mapa é declarado na main e passado como parâmetro)
+    Menu menu; //Cria a struct do menu 
+    Input input; // Cria a struct das entradas do usuário
+
+    game.mainLoop(config, map, menu, input, gameMap); //Chama a função principal do jogo passando o mapa 
 
     return 0;
 }
