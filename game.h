@@ -66,9 +66,10 @@ struct Game //Struct do jogo
         {
             config.setCursor(0, 0); //Chama a função dentro da struct config, que configura o cursor
             map.printMap(gameMap); //Chama a função para imprimir o mapa
+            gameLogic(input, gameMap); // Chama a função que cuida da lógica do jogo
             input.moviments(menu, gameMap, gameRunning); //Chama função que verifica as entradas do usuário
             input.bombExplode(gameMap); //Chama a função que cuida da explosão da bomba
-            gameLogic(input, gameMap); // Chama a função que cuida da lógica do jogo
+            
         }
     }
     
@@ -78,18 +79,24 @@ struct Game //Struct do jogo
         //cout << pEnemy->enemyMoveCounter;
 
         //Delay dos movimentos dos inimigos
-        if (pEnemy->enemyMoveCounter == 50){
+        if (pEnemy->enemyMoveCounter == 150){
+            
+            //input.enemyMoviments(gameMap, pEnemy->enemy1X, pEnemy->enemy1Y);
+            //input.enemyMoviments(gameMap, pEnemy->enemy2X, pEnemy->enemy2Y);
+            
             input.enemyMoviments(gameMap, pEnemy->enemy1X, pEnemy->enemy1Y);
             input.enemyMoviments(gameMap, pEnemy->enemy2X, pEnemy->enemy2Y);
             pEnemy->enemyMoveCounter = 0;
         }
 
         if (gameMap[pPlayer->playerX][pPlayer->playerY] == 4) { // condição de fim : explodiu com a bomba
+            system("cls");
             cout << "\nVOce Perdeu!!!!";
             Sleep(2000);
             gameRunning = false;
         }
         if ((pPlayer->playerX == pEnemy->enemy1X && pPlayer->playerY == pEnemy->enemy1Y) || (pPlayer->playerX == pEnemy->enemy2X && pPlayer->playerY == pEnemy->enemy2Y)) {
+            system("cls");
             cout << "\nVOce Perdeu!!!!";
             Sleep(2000);
             gameRunning = false; // o jogador colidiu com um inimigo
@@ -101,6 +108,7 @@ struct Game //Struct do jogo
             pEnemy->enemy2X = -1; // o segundo inimigo foi atingido pela explosão da bomba
         }
         if (pEnemy->enemy1X == -1 && pEnemy->enemy2X == -1) {
+            system("cls");
             cout << "\nVOCÊ VENCEU!"; 
             gameRunning = false; // verifica se o jogador matou todos os inimigos  
         }
