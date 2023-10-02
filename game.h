@@ -63,7 +63,7 @@ struct Game //Struct do jogo
         //cout << pEnemy->enemyMoveCounter;
 
         //Delay dos movimentos dos inimigos
-        if (pEnemy->enemyMoveCounter == 50){
+        if (pEnemy->enemyMoveCounter == 50 ){
             input.enemyMoviments(gameMap, pEnemy->enemy1X, pEnemy->enemy1Y);
             input.enemyMoviments(gameMap, pEnemy->enemy2X, pEnemy->enemy2Y);
             pEnemy->enemyMoveCounter = 0;
