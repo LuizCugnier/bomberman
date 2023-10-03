@@ -68,21 +68,18 @@ struct Input //Struct para as entradas do usuário
     //Função para os movimentos dos inimigos
     void enemyMoviments(int m[15][15], int &enemyX, int &enemyY) {
         int dir = rand() % 4; // escolhe uma direção aleatória
-        int passo = rand() % 3 + 1; // escolhe um número aleatório de passos
+        //int passo = rand() % 3 + 1; // escolhe um número aleatório de passos
         
-        for (int i = 0; i < passo; i++) {
-            if (dir == 0 && collisionCheck(m, enemyX - 1, enemyY)) {
-                enemyX--;
-            } else if (dir == 1 && collisionCheck(m, enemyX + 1, enemyY)) {
-                enemyX++;
-            } else if (dir == 2 && collisionCheck(m, enemyX, enemyY - 1)) {
-                enemyY--;
-            } else if (dir == 3 && collisionCheck(m, enemyX, enemyY + 1)) {
-                enemyY++;
-            } else {
-                break;
-            }
-        }
+        if (dir == 0 && collisionCheck(m, enemyX - 1, enemyY)) {
+            enemyX--;
+        } else if (dir == 1 && collisionCheck(m, enemyX + 1, enemyY)) {
+            enemyX++;
+        } else if (dir == 2 && collisionCheck(m, enemyX, enemyY - 1)) {
+            enemyY--;
+        } else if (dir == 3 && collisionCheck(m, enemyX, enemyY + 1)) {
+            enemyY++;
+        } 
+
     }
 
     //Função que recebe as entradas do usuário e movimenta de acordo
