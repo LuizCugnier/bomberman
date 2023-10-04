@@ -23,18 +23,18 @@ struct Input //Struct para as entradas do usuário
     }
 
     //Função que posiciona uma bomba no mapa
-    void placeBomb(int (&map)[15][15], int x, int y, bool *flagbomb){
+    void placeBomb(int **gameMap, int x, int y, bool *flagbomb){
         //cout << "teste";
         if (!*flagbomb){
             //cout << "teste1";
             *flagbomb = true;
-            map[x][y] = 3;
+            gameMap[x][y] = 3;
         }
     }
 
 
     //Função que cuida da logica de explosão da bomba
-    void bombExplode(int (&gameMap)[15][15]){
+    void bombExplode(int **gameMap){
         if (bomb.flagBomb) {
             fim = clock();
             if ((fim-inicio)/CLOCKS_PER_SEC == 3) {
@@ -57,8 +57,8 @@ struct Input //Struct para as entradas do usuário
     }
 
     //Função para verificar colisões no mapa
-    bool collisionCheck(int map[15][15], int x, int y) {
-        if (map[x][y] == 0 || map[x][y] == 4) {
+    bool collisionCheck(int **gameMap, int x, int y) {
+        if (gameMap[x][y] == 0 || gameMap[x][y] == 4) {
             return true;
         } else {
             return false;
@@ -66,27 +66,23 @@ struct Input //Struct para as entradas do usuário
     }
 
     //Função para os movimentos dos inimigos
-    void enemyMoviments(int m[15][15], int &enemyX, int &enemyY) {
+    void enemyMoviments(int **gameMap, int &enemyX, int &enemyY) {
         int dir = rand() % 4; // escolhe uma direção aleatória
-        int passo = rand() % 3 + 1; // escolhe um número aleatório de passos
         
-        for (int i = 0; i < passo; i++) {
-            if (dir == 0 && collisionCheck(m, enemyX - 1, enemyY)) {
-                enemyX--;
-            } else if (dir == 1 && collisionCheck(m, enemyX + 1, enemyY)) {
-                enemyX++;
-            } else if (dir == 2 && collisionCheck(m, enemyX, enemyY - 1)) {
-                enemyY--;
-            } else if (dir == 3 && collisionCheck(m, enemyX, enemyY + 1)) {
-                enemyY++;
-            } else {
-                break;
-            }
-        }
+        if (dir == 0 && collisionCheck(gameMap, enemyX - 1, enemyY)) {
+            enemyX--;
+        } else if (dir == 1 && collisionCheck(gameMap, enemyX + 1, enemyY)) {
+            enemyX++;
+        } else if (dir == 2 && collisionCheck(gameMap, enemyX, enemyY - 1)) {
+            enemyY--;
+        } else if (dir == 3 && collisionCheck(gameMap, enemyX, enemyY + 1)) {
+            enemyY++;
+        } 
     }
+    
 
     //Função que recebe as entradas do usuário e movimenta de acordo
-    void moviments(int (&gameMap)[15][15], bool &gameRunning){
+    void moviments(int **gameMap, bool &gameRunning){
         if (_kbhit()){
             inputKey = _getch();
 
