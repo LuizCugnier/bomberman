@@ -4,6 +4,8 @@
 
 #include "entities.h"
 
+#include <fstream>
+
 using namespace std;
 
 Player player; //Cria a struct do jogador
@@ -16,13 +18,55 @@ Bomb* pBomb = &bomb; //Cria um ponteiro para a bomba
 
 struct Map
 {   
-    //Declara o tamanho do mapa
-    int mapX = 15; 
-    int mapY = 15;
+    //Variáveis para guardar o tamanho do mapa
+    int mapX, mapY;
+    int **gameMap;
 
+    void createMap(){
+        gameMap = new int*[mapX];
+
+        for (int i=0; i < mapX; i++){
+            gameMap[i] = new int[mapY];
+        }
+    }
+
+    void deleteMap(){
+        for(int i = 0; i < mapX; i++){
+            delete gameMap[i];
+        }
+        delete gameMap;
+    }
+
+    //Função para carregar o mapa
+    void loadMap(){
+        string mapFile = "map.txt";
+        ifstream file;
+
+        file.open(mapFile);
+
+        if (file.is_open()){
+            file >> mapX >> mapY;
+            file >> pPlayer->playerX >> pPlayer->playerY;
+
+            createMap();
+
+            for (int i = 0; i < mapX; i++){
+                for (int j = 0;j < mapY; j++){
+                    char c;
+                    file >> c;
+                    gameMap[i][j] = (int)c - 48;
+
+                }
+            }
+            file.close();
+        } else {
+            cout << "Erro ao carregar";
+        }   
+        
+    }
     
     //Função que imprime o mapa no jogo
-    void printMap(int (&map)[15][15]){
+    void printMap(){
         for(int i=0;i<mapX;i++){
             for(int j=0;j<mapY;j++){
                 if(i==pPlayer->playerX && j==pPlayer->playerY){
@@ -32,7 +76,7 @@ struct Map
                 } else if (i == pEnemy->enemy2X && j == pEnemy->enemy2Y) {
                     cout<<char(6); // segundo inimigo
                 } else {
-                    switch (map[i][j]){
+                    switch (gameMap[i][j]){
                         case 0: cout<<" "; break; //caminho
                         case 1: cout<<char(219); break; //parede
                         case 2: cout<<"#"; break; //parede quebrável

@@ -7,8 +7,7 @@
 struct Player //Struct para o jogador
 {
     //Posição inicial donjogador
-    int playerX = 1; 
-    int playerY = 2;
+    int playerX, playerY;
 
 
 };

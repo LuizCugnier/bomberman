@@ -13,27 +13,13 @@
 using namespace std;
 
 int main(){
-    //Declara do layout do mapa do jogo
-    int gameMap[15][15]={       1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-                                1,0,0,0,0,0,2,2,2,0,0,0,0,0,1,
-                                1,0,1,0,1,0,1,2,1,2,1,0,1,0,1,
-                                1,0,0,0,0,0,2,2,2,2,2,0,0,0,1,
-                                1,0,1,0,1,0,1,2,1,2,1,0,1,0,1,
-                                1,0,0,2,0,2,2,2,2,2,2,2,0,0,1,
-                                1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,
-                                1,2,2,2,2,2,2,2,2,2,2,2,2,2,1,
-                                1,2,1,0,1,2,1,2,1,0,1,2,1,2,1,
-                                1,0,0,0,2,2,2,2,2,2,2,2,0,0,1,
-                                1,0,1,0,1,2,1,2,1,2,1,2,1,0,1,
-                                1,0,0,0,0,2,2,2,2,2,2,2,0,0,1,
-                                1,0,1,0,1,0,1,2,1,2,1,0,1,0,1,
-                                1,0,0,0,0,0,2,2,2,2,0,0,0,0,1,
-                                1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-    };
 
     Game game; //Inicia a struct referente ao jogo
+    Map map; //Cria a struct map (no momento apenas tem a função para imprimir o mapa pois o mapa é declarado na main e passado como parâmetro)
     
-    game.mainLoop(gameMap); //Chama a função principal do jogo passando o mapa 
+    game.mainLoop(map); //Chama a função principal do jogo passando o mapa 
+
+    map.deleteMap();
 
     return 0;
 }
