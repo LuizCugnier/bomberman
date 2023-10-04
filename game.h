@@ -6,7 +6,7 @@
 using namespace std;
 
 Config config; //Cria a struct das configurações
-Map map; //Cria a struct map (no momento apenas tem a função para imprimir o mapa pois o mapa é declarado na main e passado como parâmetro)
+
 Menu menu; //Cria a struct do menu 
 Input input; // Cria a struct das entradas do usuário
 
@@ -16,14 +16,14 @@ struct Game //Struct do jogo
     bool gameRunning = true; //Variável que indica se o jogo está rodando
 
     //Loop principal do jogo
-    void mainLoop(int (&gameMap)[15][15]){
+    void mainLoop(Map map){
         
         menu.mainMenu(); //Chama a função para imprimir o menu
 
         switch (input.menuChoise())
         {
         case 1:
-            newGame(gameMap);//Começa um novo jogo
+            newGame(map);//Começa um novo jogo
             break;
         case 2:
             //Continua um jogo ativo
@@ -39,27 +39,27 @@ struct Game //Struct do jogo
     }
 
     //Função que inicia um novo jogo
-    void newGame(int (&gameMap)[15][15]){
-        gameLoop(gameMap); //Chama o loop do jogo
+    void newGame(Map map){
+        map.loadMap();
+        gameLoop(map); //Chama o loop do jogo
     }
 
     //Funcão do loop do jogo
-    void gameLoop(int (&gameMap)[15][15]){
+    void gameLoop(Map map){
         system("cls");
 
         while (gameRunning)
         {
             config.setCursor(0, 0); //Chama a função dentro da struct config, que configura o cursor
-            map.loadMap(gameMap);
-            map.printMap(gameMap); //Chama a função para imprimir o mapa
-            input.moviments(gameMap, gameRunning); //Chama função que verifica as entradas do usuário
-            input.bombExplode(gameMap); //Chama a função que cuida da explosão da bomba
-            gameLogic(gameMap); // Chama a função que cuida da lógica do jogo
+            map.printMap(); //Chama a função para imprimir o mapa
+            input.moviments(map.gameMap, gameRunning); //Chama função que verifica as entradas do usuário
+            input.bombExplode(map.gameMap); //Chama a função que cuida da explosão da bomba
+            gameLogic(map.gameMap); // Chama a função que cuida da lógica do jogo
         }
     }
     
     //Função que cuida da lógica do jogo
-    void gameLogic(int (&gameMap)[15][15]){
+    void gameLogic(int **gameMap){
         pEnemy->enemyMoveCounter++;
         //cout << pEnemy->enemyMoveCounter;
 
