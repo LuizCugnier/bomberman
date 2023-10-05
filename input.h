@@ -14,14 +14,6 @@ struct Input //Struct para as entradas do usuário
 {
     char inputKey; //Variável para a entrada do usuário
 
-    
-    //Função que recebe uma entrada do menu e retorna a escolha
-    int menuChoise(){
-        int inputKey;
-        cin >> inputKey;
-        return inputKey;
-    }
-
     //Função que posiciona uma bomba no mapa
     void placeBomb(int **gameMap, int x, int y, bool *flagbomb){
         //cout << "teste";
@@ -82,7 +74,7 @@ struct Input //Struct para as entradas do usuário
     
 
     //Função que recebe as entradas do usuário e movimenta de acordo
-    void moviments(int **gameMap, bool &gameRunning){
+    void moviments(int **gameMap, bool &gameRunning, Map map, Menu menu){
         if (_kbhit()){
             inputKey = _getch();
 
@@ -126,9 +118,20 @@ struct Input //Struct para as entradas do usuário
 
                 case '0':
                     gameRunning = false; //Termina o jogo
+                    menu.mainMenu();
+                    map.deleteMap();
                 break;
             }
         }
     }
+
+    char inputMenuOptions(){
+        char inputMenu; //Opção do menu principal
+        if (_kbhit()){
+            inputMenu = _getch();  
+        }
+        return inputMenu;
+    }
+
 };
 #endif
