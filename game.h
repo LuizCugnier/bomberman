@@ -14,32 +14,41 @@ Input input; // Cria a struct das entradas do usuário
 struct Game //Struct do jogo
 {
     bool gameRunning = true; //Variável que indica se o jogo está rodando
+    bool menuRunning = true; //Cuida do menu
 
     //Loop principal do jogo
     void mainLoop(Map map){
         
         menu.mainMenu(); //Chama a função para imprimir o menu
 
-        switch (input.menuChoise())
-        {
-        case 1:
-            newGame(map);//Começa um novo jogo
-            break;
-        case 2:
-            //Continua um jogo ativo
-            break;
-        case 3:
-            menu.sobreMenu();
-            break;
-        default:
-            break;
+        while (menuRunning){
+            config.setCursor(0, 0); //Chama a função dentro da struct config, que configura o cursor
+            switch (input.inputMenuOptions())
+            {
+            case '1':
+                newGame(map);//Começa um novo jogo
+                break;
+            case '2':
+                //Continua um jogo existente
+                break;
+            case '3':
+                menu.sobreMenu();
+                break;
+            case '4':
+                menuRunning = false; //Termina o jogo
+                break;
+            case '0':
+                menu.mainMenu();
+                break;
+            default:
+                break;
+            }
         }
-
-
     }
 
     //Função que inicia um novo jogo
     void newGame(Map map){
+        gameRunning = true;
         map.loadMap();
         gameLoop(map); //Chama o loop do jogo
     }
@@ -52,7 +61,7 @@ struct Game //Struct do jogo
         {
             config.setCursor(0, 0); //Chama a função dentro da struct config, que configura o cursor
             map.printMap(); //Chama a função para imprimir o mapa
-            input.moviments(map.gameMap, gameRunning); //Chama função que verifica as entradas do usuário
+            input.moviments(map.gameMap, gameRunning, map, menu); //Chama função que verifica as entradas do usuário
             input.bombExplode(map.gameMap); //Chama a função que cuida da explosão da bomba
             gameLogic(map.gameMap); // Chama a função que cuida da lógica do jogo
         }
@@ -72,15 +81,17 @@ struct Game //Struct do jogo
 
         if (gameMap[pPlayer->playerX][pPlayer->playerY] == 4) { // condição de fim : explodiu com a bomba
             gameRunning = false;
+            menu.mainMenu();
         }
         if ((pPlayer->playerX == pEnemy->enemy1X && pPlayer->playerY == pEnemy->enemy1Y) || (pPlayer->playerX == pEnemy->enemy2X && pPlayer->playerY == pEnemy->enemy2Y)) {
             gameRunning = false; // o jogador colidiu com um inimigo
+            menu.mainMenu();
         }
         if (gameMap[pEnemy->enemy1X][pEnemy->enemy1Y] == 4) {
-            pEnemy->enemy1X = -1; // o primeiro inimigo foi atingido pela explosão da bomba
+            // o primeiro inimigo foi atingido pela explosão da bomba
         }
         if (gameMap[pEnemy->enemy2X][pEnemy->enemy2Y] == 4) {
-            pEnemy->enemy2X = -1; // o segundo inimigo foi atingido pela explosão da bomba
+           // o segundo inimigo foi atingido pela explosão da bomba
         }
         if (pEnemy->enemy1X == -1 && pEnemy->enemy2X == -1) {
             cout << "\nVOCÊ VENCEU!"; 
