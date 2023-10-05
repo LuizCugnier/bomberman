@@ -19,7 +19,7 @@ int main(){
     
     game.mainLoop(map); //Chama a função principal do jogo passando o mapa 
 
-    map.deleteMap();
+    
 
     return 0;
 }
