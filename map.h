@@ -47,6 +47,8 @@ struct Map
         if (file.is_open()){
             file >> mapX >> mapY;
             file >> pPlayer->playerX >> pPlayer->playerY;
+            file >> pEnemy->enemy1X >> pEnemy->enemy1Y;
+            file >> pEnemy->enemy2X >> pEnemy->enemy2Y;
 
             createMap();
 
@@ -71,9 +73,9 @@ struct Map
             for(int j=0;j<mapY;j++){
                 if(i==pPlayer->playerX && j==pPlayer->playerY){
                     cout<<char(2); //personagem
-                } else if (i == pEnemy->enemy1X && j == pEnemy->enemy1Y) {
+                } else if (i == pEnemy->enemy1X && j == pEnemy->enemy1Y && pEnemy->enemy1Alive) {
                     cout<<char(5); // primeiro inimigo
-                } else if (i == pEnemy->enemy2X && j == pEnemy->enemy2Y) {
+                } else if (i == pEnemy->enemy2X && j == pEnemy->enemy2Y && pEnemy->enemy2Alive) {
                     cout<<char(6); // segundo inimigo
                 } else {
                     switch (gameMap[i][j]){
