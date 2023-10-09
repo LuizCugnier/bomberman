@@ -70,7 +70,10 @@ struct Game //Struct do jogo
     //Função que cuida da lógica do jogo
     void gameLogic(int **gameMap){
         pEnemy->enemyMoveCounter++;
-        //cout << pEnemy->enemyMoveCounter;
+        
+        // condição de fim : matou todos os inimigos
+        enemyHit(pEnemy->enemy1Alive, pEnemy->enemy1X, pEnemy->enemy1Y, gameMap);
+        enemyHit(pEnemy->enemy2Alive, pEnemy->enemy2X, pEnemy->enemy2Y, gameMap);
 
         //Delay dos movimentos dos inimigos
         if (pEnemy->enemyMoveCounter == 50 ){
@@ -83,19 +86,23 @@ struct Game //Struct do jogo
             gameRunning = false;
             menu.mainMenu();
         }
-        if ((pPlayer->playerX == pEnemy->enemy1X && pPlayer->playerY == pEnemy->enemy1Y) || (pPlayer->playerX == pEnemy->enemy2X && pPlayer->playerY == pEnemy->enemy2Y)) {
+        if ((pPlayer->playerX == pEnemy->enemy1X && pPlayer->playerY == pEnemy->enemy1Y && pEnemy->enemy1Alive) || (pPlayer->playerX == pEnemy->enemy2X && pPlayer->playerY == pEnemy->enemy2Y && pEnemy->enemy2Alive)) {
             gameRunning = false; // o jogador colidiu com um inimigo
             menu.mainMenu();
         }
-        if (gameMap[pEnemy->enemy1X][pEnemy->enemy1Y] == 4) {
-            // o primeiro inimigo foi atingido pela explosão da bomba
-        }
-        if (gameMap[pEnemy->enemy2X][pEnemy->enemy2Y] == 4) {
-           // o segundo inimigo foi atingido pela explosão da bomba
-        }
-        if (pEnemy->enemy1X == -1 && pEnemy->enemy2X == -1) {
+
+       
+
+        if (pEnemy->enemy1Alive == false && pEnemy->enemy2Alive == false) {
             cout << "\nVOCÊ VENCEU!"; 
-            gameRunning = false; // verifica se o jogador matou todos os inimigos  
+            gameRunning = false; // verifica se o jogador matou todos os inimigos
+            menu.mainMenu();  
+        }
+    }
+
+    void enemyHit(bool &enemyAlive, int &enemyX, int &enemyY, int **gameMap){
+        if (gameMap[enemyX][enemyY] == 4) {
+            enemyAlive = false;
         }
     }
 
