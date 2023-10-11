@@ -68,7 +68,7 @@ struct Map
     }
     
     //Função que imprime o mapa no jogo
-    void printMap(){
+    void printMap(int **gameMap){
         for(int i=0;i<mapX;i++){
             for(int j=0;j<mapY;j++){
                 if(i==pPlayer->playerX && j==pPlayer->playerY){
@@ -78,6 +78,7 @@ struct Map
                 } else if (i == pEnemy->enemy2X && j == pEnemy->enemy2Y && pEnemy->enemy2Alive) {
                     cout<<char(6); // segundo inimigo
                 } else {
+                    //cout << "teste";
                     switch (gameMap[i][j]){
                         case 0: cout<<" "; break; //caminho
                         case 1: cout<<char(219); break; //parede
