@@ -119,7 +119,6 @@ struct Input //Struct para as entradas do usuário
                 case '0':
                     gameRunning = false; //Termina o jogo
                     menu.mainMenu();
-                    map.deleteMap();
                 break;
             }
         }
