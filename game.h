@@ -29,7 +29,6 @@ struct Game //Struct do jogo
                 break;
             case '3':
                 menu.sobreMenu();
-                cout << map.gameMap[0][0];
                 break;
             case '4':
                 map.deleteMap();
