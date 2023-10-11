@@ -5,19 +5,15 @@
 
 using namespace std;
 
-Config config; //Cria a struct das configurações
-
-Menu menu; //Cria a struct do menu 
-Input input; // Cria a struct das entradas do usuário
-
 
 struct Game //Struct do jogo
 {
     bool gameRunning = true; //Variável que indica se o jogo está rodando
     bool menuRunning = true; //Cuida do menu
+    bool gameStarted = false; //Variável que indica se o jogo já começou
 
     //Loop principal do jogo
-    void mainLoop(Map map){
+    void mainLoop(Config config, Map &map, Menu &menu, Input input){
         
         menu.mainMenu(); //Chama a função para imprimir o menu
 
@@ -26,15 +22,17 @@ struct Game //Struct do jogo
             switch (input.inputMenuOptions())
             {
             case '1':
-                newGame(map);//Começa um novo jogo
+                newGame(config, map, input, menu);//Começa um novo jogo
                 break;
             case '2':
-                //Continua um jogo existente
+                continueGame(config, map, input, menu);//Continua um jogo existente
                 break;
             case '3':
                 menu.sobreMenu();
+                cout << map.gameMap[0][0];
                 break;
             case '4':
+                map.deleteMap();
                 menuRunning = false; //Termina o jogo
                 break;
             case '0':
@@ -47,31 +45,50 @@ struct Game //Struct do jogo
     }
 
     //Função que inicia um novo jogo
-    void newGame(Map map){
-        gameRunning = true;
+    void newGame(Config config, Map &map, Input input, Menu &menu){
+        newGameSetup();
         map.loadMap();
-        gameLoop(map); //Chama o loop do jogo
+        gameLoop(config, map, input, menu); //Chama o loop do jogo
+    }
+
+    void newGameSetup(){
+        gameRunning = true;
+        pEnemy->enemy1Alive = true;
+        pEnemy->enemy2Alive = true;
+        gameStarted = true;
+
+    }
+
+    void continueGame(Config config, Map &map, Input input, Menu &menu){
+        if (gameStarted){
+            gameRunning = true;
+            gameLoop(config, map, input, menu); //Chama o loop do jogo
+        } else {
+            cout << "Nenhum jogo salvo encontrado";
+            Sleep(1000);
+            menu.mainMenu();
+        }
     }
 
     //Funcão do loop do jogo
-    void gameLoop(Map map){
+    void gameLoop(Config config, Map &map, Input input, Menu &menu){
         system("cls");
 
         while (gameRunning)
         {
             config.setCursor(0, 0); //Chama a função dentro da struct config, que configura o cursor
-            map.printMap(); //Chama a função para imprimir o mapa
+            map.printMap(map.gameMap); //Chama a função para imprimir o mapa
             input.moviments(map.gameMap, gameRunning, map, menu); //Chama função que verifica as entradas do usuário
             input.bombExplode(map.gameMap); //Chama a função que cuida da explosão da bomba
-            gameLogic(map.gameMap); // Chama a função que cuida da lógica do jogo
+            gameLogic(menu, input, map.gameMap); // Chama a função que cuida da lógica do jogo
         }
     }
     
     //Função que cuida da lógica do jogo
-    void gameLogic(int **gameMap){
+    void gameLogic(Menu &menu, Input input, int **gameMap){
         pEnemy->enemyMoveCounter++;
         
-        // condição de fim : matou todos os inimigos
+        //Verifica se o enimigo foi atingido pela explosão
         enemyHit(pEnemy->enemy1Alive, pEnemy->enemy1X, pEnemy->enemy1Y, gameMap);
         enemyHit(pEnemy->enemy2Alive, pEnemy->enemy2X, pEnemy->enemy2Y, gameMap);
 
@@ -92,10 +109,12 @@ struct Game //Struct do jogo
         }
 
        
-
+        // verifica se o jogador matou todos os inimigos
         if (pEnemy->enemy1Alive == false && pEnemy->enemy2Alive == false) {
-            cout << "\nVOCÊ VENCEU!"; 
-            gameRunning = false; // verifica se o jogador matou todos os inimigos
+            gameRunning = false; 
+            system("cls");    
+            cout << "\nVOCÊ VENCEU!";
+            Sleep(1000); 
             menu.mainMenu();  
         }
     }
