@@ -117,6 +117,7 @@ struct Input //Struct para as entradas do usuário
                 break;
 
                 case '0':
+                    map.saveMap("maps/continueMap.txt");
                     gameRunning = false; //Termina o jogo
                     menu.mainMenu();
                 break;
