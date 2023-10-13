@@ -46,7 +46,7 @@ struct Game //Struct do jogo
     //Função que inicia um novo jogo
     void newGame(Config config, Map &map, Input input, Menu &menu){
         newGameSetup();
-        map.loadMap();
+        map.loadMap("maps/map.txt");
         gameLoop(config, map, input, menu); //Chama o loop do jogo
     }
 
@@ -61,9 +61,19 @@ struct Game //Struct do jogo
     void continueGame(Config config, Map &map, Input input, Menu &menu){
         if (gameStarted){
             gameRunning = true;
+            map.loadMap("maps/continueMap.txt");
             gameLoop(config, map, input, menu); //Chama o loop do jogo
         } else {
-            cout << "Nenhum jogo salvo encontrado";
+            system("cls");
+            cout << "================================================================================================================\n";
+            cout << R"(
+                 _  _ ___ _  _ _  _ _   _ __  __      _  ___   ___  ___    ___ _  _  ___ ___  _  _ _____ ___    _   ___   ___  _ _ _ 
+                | \| | __| \| | || | | | |  \/  |  _ | |/ _ \ / __|/ _ \  | __| \| |/ __/ _ \| \| |_   _| _ \  /_\ |   \ / _ \| | | |
+                | .` | _|| .` | __ | |_| | |\/| | | || | (_) | (_ | (_) | | _|| .` | (_| (_) | .` | | | |   / / _ \| |) | (_) |_|_|_|
+                |_|\_|___|_|\_|_||_|\___/|_|  |_|  \__/ \___/ \___|\___/  |___|_|\_|\___\___/|_|\_| |_| |_|_\/_/ \_\___/ \___/(_|_|_)
+                                                                                                                      
+            )" << endl;
+            cout << "=================================================================================================================\n";
             Sleep(1000);
             menu.mainMenu();
         }
@@ -98,18 +108,24 @@ struct Game //Struct do jogo
             pEnemy->enemyMoveCounter = 0;
         }
 
-        if (gameMap[pPlayer->playerX][pPlayer->playerY] == 4) { // condição de fim : explodiu com a bomba
+        // condição de fim : explodiu com a bomba
+        if (gameMap[pPlayer->playerX][pPlayer->playerY] == 4) { 
             gameRunning = false;
             menu.mainMenu();
         }
+        // condição de fim : o jogador colidiu com um inimigo
         if ((pPlayer->playerX == pEnemy->enemy1X && pPlayer->playerY == pEnemy->enemy1Y && pEnemy->enemy1Alive) || (pPlayer->playerX == pEnemy->enemy2X && pPlayer->playerY == pEnemy->enemy2Y && pEnemy->enemy2Alive)) {
-            gameRunning = false; // o jogador colidiu com um inimigo
+            gameRunning = false; 
             menu.mainMenu();
         }
 
        
-        // verifica se o jogador matou todos os inimigos
-        if (pEnemy->enemy1Alive == false && pEnemy->enemy2Alive == false) {
+        // condição de fim : verifica se o jogador matou todos os inimigos
+        gameWin(menu);
+    }
+
+    void gameWin(Menu &menu){
+        if (!pEnemy->enemy1Alive && !pEnemy->enemy2Alive) {
             gameRunning = false; 
             system("cls");    
             cout << "\nVOCÊ VENCEU!";
