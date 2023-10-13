@@ -28,14 +28,15 @@ struct Game //Struct do jogo
                 continueGame(config, map, input, menu);//Continua um jogo existente
                 break;
             case '3':
-                menu.sobreMenu();
+                menu.sobreMenu(); //Imprime o menu sobre
                 break;
             case '4':
                 map.deleteMap();
                 menuRunning = false; //Termina o jogo
+                menu.endGame(); //Imprime a mensagem de fim de jogo 
                 break;
             case '0':
-                menu.mainMenu();
+                menu.mainMenu(); //Volta para o menu principal
                 break;
             default:
                 break;
@@ -65,15 +66,7 @@ struct Game //Struct do jogo
             gameLoop(config, map, input, menu); //Chama o loop do jogo
         } else {
             system("cls");
-            cout << "================================================================================================================\n";
-            cout << R"(
-                 _  _ ___ _  _ _  _ _   _ __  __      _  ___   ___  ___    ___ _  _  ___ ___  _  _ _____ ___    _   ___   ___  _ _ _ 
-                | \| | __| \| | || | | | |  \/  |  _ | |/ _ \ / __|/ _ \  | __| \| |/ __/ _ \| \| |_   _| _ \  /_\ |   \ / _ \| | | |
-                | .` | _|| .` | __ | |_| | |\/| | | || | (_) | (_ | (_) | | _|| .` | (_| (_) | .` | | | |   / / _ \| |) | (_) |_|_|_|
-                |_|\_|___|_|\_|_||_|\___/|_|  |_|  \__/ \___/ \___|\___/  |___|_|\_|\___\___/|_|\_| |_| |_|_\/_/ \_\___/ \___/(_|_|_)
-                                                                                                                      
-            )" << endl;
-            cout << "=================================================================================================================\n";
+            menu.noGameFound(); //Imprime a mensagem de erro
             Sleep(1000);
             menu.mainMenu();
         }
@@ -128,7 +121,7 @@ struct Game //Struct do jogo
         if (!pEnemy->enemy1Alive && !pEnemy->enemy2Alive) {
             gameRunning = false; 
             system("cls");    
-            cout << "\nVOCÊ VENCEU!";
+            menu.gameWin();
             Sleep(1000); 
             menu.mainMenu();  
         }
