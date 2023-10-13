@@ -37,9 +37,32 @@ struct Map
         delete gameMap;
     }
 
+    void saveMap(string mapFile){
+        ofstream file;
+
+        file.open(mapFile);
+
+        if (file.is_open()){
+            file << mapX << " " << mapY << "\n";
+            file << pPlayer->playerX << " " << pPlayer->playerY << "\n";
+            file << pEnemy->enemy1X << " " << pEnemy->enemy1Y << "\n";
+            file << pEnemy->enemy2X << " " << pEnemy->enemy2Y << "\n";
+
+            for (int i = 0; i < mapX; i++){
+                for (int j = 0;j < mapY; j++){
+                    file << gameMap[i][j];
+                }
+                file << "\n";
+            }
+            file.close();
+        } else {
+            cout << "Erro ao salvar";
+        }
+    }
+
     //Função para carregar o mapa
-    void loadMap(){
-        string mapFile = "map.txt";
+    void loadMap(string mapFile){
+        
         ifstream file;
 
         file.open(mapFile);
