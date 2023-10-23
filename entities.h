@@ -15,8 +15,11 @@ struct Player //Struct para o jogador
 struct Enemy //Struct para o inimigo
 {
     //Posição inicial dos inimigos
-    int enemy1X = 1, enemy1Y = 1;
-    int enemy2X = 13, enemy2Y = 13;
+    int enemy1X, enemy1Y;
+    int enemy2X, enemy2Y;
+
+    bool enemy1Alive = true;
+    bool enemy2Alive = true;
 
     int enemyMoveCounter; //Variável para contar os movimentos do inimigo
 };

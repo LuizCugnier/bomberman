@@ -37,9 +37,32 @@ struct Map
         delete gameMap;
     }
 
+    void saveMap(string mapFile){
+        ofstream file;
+
+        file.open(mapFile);
+
+        if (file.is_open()){
+            file << mapX << " " << mapY << "\n";
+            file << pPlayer->playerX << " " << pPlayer->playerY << "\n";
+            file << pEnemy->enemy1X << " " << pEnemy->enemy1Y << "\n";
+            file << pEnemy->enemy2X << " " << pEnemy->enemy2Y << "\n";
+
+            for (int i = 0; i < mapX; i++){
+                for (int j = 0;j < mapY; j++){
+                    file << gameMap[i][j];
+                }
+                file << "\n";
+            }
+            file.close();
+        } else {
+            cout << "Erro ao salvar";
+        }
+    }
+
     //Função para carregar o mapa
-    void loadMap(){
-        string mapFile = "map.txt";
+    void loadMap(string mapFile){
+        
         ifstream file;
 
         file.open(mapFile);
@@ -47,6 +70,8 @@ struct Map
         if (file.is_open()){
             file >> mapX >> mapY;
             file >> pPlayer->playerX >> pPlayer->playerY;
+            file >> pEnemy->enemy1X >> pEnemy->enemy1Y;
+            file >> pEnemy->enemy2X >> pEnemy->enemy2Y;
 
             createMap();
 
@@ -66,16 +91,17 @@ struct Map
     }
     
     //Função que imprime o mapa no jogo
-    void printMap(){
+    void printMap(int **gameMap){
         for(int i=0;i<mapX;i++){
             for(int j=0;j<mapY;j++){
                 if(i==pPlayer->playerX && j==pPlayer->playerY){
                     cout<<char(2); //personagem
-                } else if (i == pEnemy->enemy1X && j == pEnemy->enemy1Y) {
+                } else if (i == pEnemy->enemy1X && j == pEnemy->enemy1Y && pEnemy->enemy1Alive) {
                     cout<<char(5); // primeiro inimigo
-                } else if (i == pEnemy->enemy2X && j == pEnemy->enemy2Y) {
+                } else if (i == pEnemy->enemy2X && j == pEnemy->enemy2Y && pEnemy->enemy2Alive) {
                     cout<<char(6); // segundo inimigo
                 } else {
+                    //cout << "teste";
                     switch (gameMap[i][j]){
                         case 0: cout<<" "; break; //caminho
                         case 1: cout<<char(219); break; //parede
