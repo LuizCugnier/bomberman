@@ -9,7 +9,7 @@ using namespace std;
 struct Game //Struct do jogo
 {
     bool gameRunning = true; //Variável que indica se o jogo está rodando
-    bool menuRunning = true; //Cuida do menu
+    bool menuRunning = true; //Variável que indica se o jogo está rodando
     bool gameStarted = false; //Variável que indica se o jogo já começou
 
     //Loop principal do jogo
