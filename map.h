@@ -22,6 +22,7 @@ struct Map
     int mapX, mapY;
     int **gameMap;
 
+    //Cria e reserva o espaço necessário na memória para o mapa
     void createMap(){
         gameMap = new int*[mapX];
 
@@ -30,6 +31,7 @@ struct Map
         }
     }
 
+    //Deleta o a memória alocada
     void deleteMap(){
         for(int i = 0; i < mapX; i++){
             delete gameMap[i];
@@ -37,17 +39,46 @@ struct Map
         delete gameMap;
     }
 
+    //Seleciona um mapa 
+    string selectMap(Menu menu){
+        int randomMap = rand() % 3 + 1;
+        int mapChoice;
+        
+        menu.mapChoice(mapChoice);
+
+        if (mapChoice == 4) {
+            mapChoice = randomMap;
+        }
+
+        switch (mapChoice)
+        {
+        case 1:
+            return "maps/map.txt";
+            break;
+        case 2:
+            return "maps/map2.txt";
+            break;
+        case 3:
+            return "maps/map3.txt"; 
+            break;
+        default:
+            break;
+        }
+    }
+
+    //Salva o mapa num arquivo separado ao voltar pro menu
     void saveMap(string mapFile){
         ofstream file;
 
-        file.open(mapFile);
+        file.open(mapFile); //Abre o arquivo
 
-        if (file.is_open()){
-            file << mapX << " " << mapY << "\n";
-            file << pPlayer->playerX << " " << pPlayer->playerY << "\n";
-            file << pEnemy->enemy1X << " " << pEnemy->enemy1Y << "\n";
-            file << pEnemy->enemy2X << " " << pEnemy->enemy2Y << "\n";
+        if (file.is_open()){ //Verifica se o arquivo está aberto
+            file << mapX << " " << mapY << "\n";                            //Salva o tamanho do mapa
+            file << pPlayer->playerX << " " << pPlayer->playerY << "\n";    //Salva a posição do jogador
+            file << pEnemy->enemy1X << " " << pEnemy->enemy1Y << "\n";      //Salva a posição do inimigo um
+            file << pEnemy->enemy2X << " " << pEnemy->enemy2Y << "\n";      //Salva a posição do inimigo dois
 
+            //Salva o mapa 
             for (int i = 0; i < mapX; i++){
                 for (int j = 0;j < mapY; j++){
                     file << gameMap[i][j];
@@ -65,16 +96,17 @@ struct Map
         
         ifstream file;
 
-        file.open(mapFile);
+        file.open(mapFile); //Abre o arquivo
 
-        if (file.is_open()){
-            file >> mapX >> mapY;
-            file >> pPlayer->playerX >> pPlayer->playerY;
-            file >> pEnemy->enemy1X >> pEnemy->enemy1Y;
-            file >> pEnemy->enemy2X >> pEnemy->enemy2Y;
+        if (file.is_open()){ //Verifica se o arquivo está aberto
+            file >> mapX >> mapY;                           //Carrega o tamanho do mapa
+            file >> pPlayer->playerX >> pPlayer->playerY;   //Carrega a posição do jogador
+            file >> pEnemy->enemy1X >> pEnemy->enemy1Y;     //Carrega a posição do inimigo um
+            file >> pEnemy->enemy2X >> pEnemy->enemy2Y;     //Carrega a posição do inimigo dois
 
-            createMap();
+            createMap(); //Chama a função que cria o mapa 
 
+            //Carrega o mapa na matriz criada
             for (int i = 0; i < mapX; i++){
                 for (int j = 0;j < mapY; j++){
                     char c;

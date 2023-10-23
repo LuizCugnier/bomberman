@@ -8,9 +8,10 @@ using namespace std;
 
 struct Game //Struct do jogo
 {
-    bool gameRunning = true; //Variável que indica se o jogo está rodando
-    bool menuRunning = true; //Variável que indica se o jogo está rodando
-    bool gameStarted = false; //Variável que indica se o jogo já começou
+    bool gameRunning = true;    //Variável que indica se o jogo está rodando
+    bool menuRunning = true;    //Variável para o loop principal do jogo
+    bool gameStarted = false;   //Variável que indica se o jogo já começou
+    string mapFile;             //Variável para guardar o arquivo do mapa 
 
     //Loop principal do jogo
     void mainLoop(Config config, Map &map, Menu &menu, Input input){
@@ -31,9 +32,9 @@ struct Game //Struct do jogo
                 menu.sobreMenu(); //Imprime o menu sobre
                 break;
             case '4':
-                map.deleteMap();
-                menuRunning = false; //Termina o jogo
-                menu.endGame(); //Imprime a mensagem de fim de jogo 
+                map.deleteMap(); //Deleta a memória alocada do mapa
+                menuRunning = false; //Termina o loop principal do jogo
+                menu.endGame(); //Imprime a mensagem de fim de jogo
                 break;
             case '0':
                 menu.mainMenu(); //Volta para o menu principal
@@ -47,10 +48,12 @@ struct Game //Struct do jogo
     //Função que inicia um novo jogo
     void newGame(Config config, Map &map, Input input, Menu &menu){
         newGameSetup();
-        map.loadMap("maps/map.txt");
+        mapFile = map.selectMap(menu); //Guarda o mapa escolhido
+        map.loadMap(mapFile); //Carrega o mapa escolhido
         gameLoop(config, map, input, menu); //Chama o loop do jogo
     }
 
+    //Carrega as configurações do novo jogo
     void newGameSetup(){
         gameRunning = true;
         pEnemy->enemy1Alive = true;
@@ -59,16 +62,17 @@ struct Game //Struct do jogo
 
     }
 
+    //Continua um novo jogo se existente
     void continueGame(Config config, Map &map, Input input, Menu &menu){
         if (gameStarted){
             gameRunning = true;
-            map.loadMap("maps/continueMap.txt");
+            map.loadMap("maps/continueMap.txt"); //Carrega o mapa salvo ao voltar pro menu
             gameLoop(config, map, input, menu); //Chama o loop do jogo
         } else {
             system("cls");
             menu.noGameFound(); //Imprime a mensagem de erro
-            Sleep(1000);
-            menu.mainMenu();
+            Sleep(800);
+            menu.mainMenu(); //Imprime novamente o menu
         }
     }
 
@@ -117,6 +121,7 @@ struct Game //Struct do jogo
         gameWin(menu);
     }
 
+    //Verifica se os inimigos morreram e se sim termina o jogo
     void gameWin(Menu &menu){
         if (!pEnemy->enemy1Alive && !pEnemy->enemy2Alive) {
             gameRunning = false; 
@@ -127,6 +132,7 @@ struct Game //Struct do jogo
         }
     }
 
+    //Verifica se o inimigo foi atingido pela bomba
     void enemyHit(bool &enemyAlive, int &enemyX, int &enemyY, int **gameMap){
         if (gameMap[enemyX][enemyY] == 4) {
             enemyAlive = false;
