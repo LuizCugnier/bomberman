@@ -1,7 +1,7 @@
 /**
  * 
  * Bomberman
- * Versão: 1.0
+ * Versão: 2.0
  * Luiz Augusto Cugnier Neto
  * Lucas Carvalho de Borba
 */
@@ -11,7 +11,7 @@
 
 
 using namespace std;
-
+ 
 int main(){
 
     Game game; //Inicia a struct referente ao jogo
