@@ -8,8 +8,7 @@ struct Player //Struct para o jogador
 {
     //Posição inicial donjogador
     int playerX, playerY;
-
-
+    bool hasExplosionPowerUp = false; //Variável para verificar se o jogador tem o power up de explosão
 };
 
 struct Enemy //Struct para o inimigo
@@ -28,8 +27,7 @@ struct Bomb //Struct para a bomba
 {
     bool flagBomb = false; //Variável para verificar se já existe bomba
     int bombX, bombY; //localização da bomba
-    clock_t savedEndTime, savedStartTime; //Variáveis para armazenar o tempo da bomba
-    bool powerUpFlag = false; //Variável para verificar se já existe power up   
+    int bombCount; //Variável para contar o numero de bombas
 };
 
 
