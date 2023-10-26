@@ -108,11 +108,13 @@ struct Game //Struct do jogo
         // condição de fim : explodiu com a bomba
         if (gameMap[pPlayer->playerX][pPlayer->playerY] == 4) { 
             gameRunning = false;
+            menu.gameOver();
             menu.mainMenu();
         }
         // condição de fim : o jogador colidiu com um inimigo
         if ((pPlayer->playerX == pEnemy->enemy1X && pPlayer->playerY == pEnemy->enemy1Y && pEnemy->enemy1Alive) || (pPlayer->playerX == pEnemy->enemy2X && pPlayer->playerY == pEnemy->enemy2Y && pEnemy->enemy2Alive)) {
-            gameRunning = false; 
+            gameRunning = false;
+            menu.gameOver(); 
             menu.mainMenu();
         }
 
