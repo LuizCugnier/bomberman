@@ -27,7 +27,7 @@ struct Bomb //Struct para a bomba
 {
     bool flagBomb = false; //Variável para verificar se já existe bomba
     int bombX, bombY; //localização da bomba
-    int bombCount; //Variável para contar o numero de bombas
+    int bombCount = 0; //Variável para contar o numero de bombas
 };
 
 

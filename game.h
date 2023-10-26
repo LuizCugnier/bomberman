@@ -110,12 +110,14 @@ struct Game //Struct do jogo
         // condição de fim : explodiu com a bomba
         if (gameMap[pPlayer->playerX][pPlayer->playerY] == 4) { 
             gameRunning = false;
+            pBomb->flagBomb = false;
             menu.gameOver();
             menu.mainMenu();
         }
         // condição de fim : o jogador colidiu com um inimigo
         if ((pPlayer->playerX == pEnemy->enemy1X && pPlayer->playerY == pEnemy->enemy1Y && pEnemy->enemy1Alive) || (pPlayer->playerX == pEnemy->enemy2X && pPlayer->playerY == pEnemy->enemy2Y && pEnemy->enemy2Alive)) {
             gameRunning = false;
+            pBomb->flagBomb = false;
             menu.gameOver(); 
             menu.mainMenu();
         }
@@ -124,8 +126,12 @@ struct Game //Struct do jogo
         // condição de fim : verifica se o jogador matou todos os inimigos
         gameWin(menu);
 
-        input.collectPowerUp(gameMap);
-        input.checkPowerUpExpiration();
+        clock_t explosionPWTime = input.collectPowerUp(gameMap);
+        input.checkPowerUpExpiration(explosionPWTime);
+
+        if (pBomb->flagBomb){
+            pBomb->bombCount++;
+        }
     }
 
     //Verifica se os inimigos morreram e se sim termina o jogo

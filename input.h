@@ -12,15 +12,17 @@ using namespace std;
 
 struct Input //Struct para as entradas do usuário
 {   
-    clock_t startTime, endTime, totalTime, powerUpCollectTime, currentTime; //Declaração das entidades de contagem de tempo para armazenar inicio e fim do período da bomba
+    clock_t startTime, endTime, totalTime, powerUpCollectTime, currentTime, elapsedTime; //Declaração das entidades de contagem de tempo para armazenar inicio e fim do período da bomba
     char inputKey; //Variável para a entrada do usuário
     bool isGamePaused = false; // Adicione essa variável para rastrear o estado de pausa do jogo
 
-    void collectPowerUp(int **gameMap){
+    clock_t collectPowerUp(int **gameMap){
         if (gameMap[pPlayer->playerX][pPlayer->playerY] == 5) {
             pPlayer->hasExplosionPowerUp = true;
             powerUpCollectTime = clock();
+            //cout << "\n1-" << powerUpCollectTime << endl;
             gameMap[pPlayer->playerX][pPlayer->playerY] = 0;
+            return powerUpCollectTime;
         }
     }
 
@@ -45,12 +47,12 @@ struct Input //Struct para as entradas do usuário
         bomb.flagBomb = false;
     }
 
-    void checkPowerUpExpiration() {
+    void checkPowerUpExpiration(clock_t &powerUpCollectTime) {
         if (pPlayer->hasExplosionPowerUp && !isGamePaused) {
             currentTime = clock();
-            double elapsedTime = (double)(currentTime - powerUpCollectTime) / CLOCKS_PER_SEC;
-            cout << "PowerUp Timer =" << elapsedTime << endl;
-            cout << currentTime << powerUpCollectTime;	
+            elapsedTime = (currentTime - powerUpCollectTime) / CLOCKS_PER_SEC;
+            //cout << "PowerUp Timer =" << elapsedTime << endl;
+            cout << currentTime << " " << powerUpCollectTime << endl;	
             if (elapsedTime >= 20.0) { // Se passaram 15 segundos
                 pPlayer->hasExplosionPowerUp = false; // Redefina o poder coletado  
                 elapsedTime = 0; // Redefina o tempo decorrido
@@ -113,10 +115,9 @@ struct Input //Struct para as entradas do usuário
             startTime = clock();
             pBomb->bombX = pPlayer->playerX;
             pBomb->bombY = pPlayer->playerY;
-            
         }
 
-        pBomb->bombCount++;
+        
     }
 
     //Função que cuida da logica de explosão da bomba

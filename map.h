@@ -147,7 +147,7 @@ struct Map
             cout<<"\n";
         } //fim for mapa
         cout << "Aperte '0' para sair\n";
-        cout << "Numero de bombas: " << pBomb->bombCount;
+        //cout << "Numero de bombas: " << pBomb->bombCount;
     }
 };
 #endif
