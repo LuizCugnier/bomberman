@@ -65,6 +65,7 @@ struct Game //Struct do jogo
     //Continua um novo jogo se existente
     void continueGame(Config config, Map &map, Input input, Menu &menu){
         if (gameStarted){
+            input.isGamePaused = false;
             gameRunning = true;
             map.loadMap("maps/continueMap.txt"); //Carrega o mapa salvo ao voltar pro menu
             gameLoop(config, map, input, menu); //Chama o loop do jogo
@@ -85,7 +86,7 @@ struct Game //Struct do jogo
             config.setCursor(0, 0); //Chama a função dentro da struct config, que configura o cursor
             map.printMap(map.gameMap); //Chama a função para imprimir o mapa
             input.moviments(map.gameMap, gameRunning, map, menu); //Chama função que verifica as entradas do usuário
-            input.bombExplode(map.gameMap); //Chama a função que cuida da explosão da bomba
+            input.bombExplode(map.gameMap, gameRunning); //Chama a função que cuida da explosão da bomba
             gameLogic(menu, input, map.gameMap); // Chama a função que cuida da lógica do jogo
         }
     }

@@ -8,20 +8,22 @@
 
 using namespace std;
 
-clock_t inicio, fim; //Declaração das entidades de contagem de tempo para armazenar inicio e fim do período da bomba
+
 
 struct Input //Struct para as entradas do usuário
-{
+{   
+    clock_t startTime, endTime, totalTime; //Declaração das entidades de contagem de tempo para armazenar inicio e fim do período da bomba
     char inputKey; //Variável para a entrada do usuário
+    bool isGamePaused = false; // Adicione essa variável para rastrear o estado de pausa do jogo
 
     //Função que posiciona uma bomba no mapa
     void placeBomb(int **gameMap, int x, int y, bool *flagbomb){
         //cout << "teste";
-        if (!*flagbomb){
+        if (!*flagbomb && !isGamePaused){
             //cout << "teste1";
             *flagbomb = true;
             gameMap[x][y] = 3;
-            inicio = clock();
+            startTime = clock();
             pBomb->bombX = pPlayer->playerX;
             pBomb->bombY = pPlayer->playerY;
         }
@@ -29,10 +31,12 @@ struct Input //Struct para as entradas do usuário
 
 
     //Função que cuida da logica de explosão da bomba
-    void bombExplode(int **gameMap){
-        if (bomb.flagBomb) {
-            fim = clock();
-            if ((fim-inicio)/CLOCKS_PER_SEC == 3) {
+    void bombExplode(int **gameMap, bool &gameRunning){
+        if (bomb.flagBomb && gameRunning && !isGamePaused) {
+            endTime = clock();
+            totalTime = (endTime-startTime)/CLOCKS_PER_SEC;
+            cout << totalTime;
+            if ( totalTime == 3) {
                 gameMap[pBomb->bombX][pBomb->bombY] = 4;
                 if (gameMap[pBomb->bombX+1][pBomb->bombY]==0 || gameMap[pBomb->bombX+1][pBomb->bombY]==2) gameMap[pBomb->bombX+1][pBomb->bombY] = 4;
                 if (gameMap[pBomb->bombX-1][pBomb->bombY]==0 || gameMap[pBomb->bombX-1][pBomb->bombY]==2) gameMap[pBomb->bombX-1][pBomb->bombY] = 4;
@@ -40,7 +44,7 @@ struct Input //Struct para as entradas do usuário
                 if (gameMap[pBomb->bombX][pBomb->bombY-1]==0 || gameMap[pBomb->bombX][pBomb->bombY-1]==2) gameMap[pBomb->bombX][pBomb->bombY-1] = 4;
             }
 
-            if ((fim-inicio)/CLOCKS_PER_SEC == 4) {
+            if (totalTime == 4) {
                 gameMap[pBomb->bombX][pBomb->bombY] = 0;
                 if (gameMap[pBomb->bombX+1][pBomb->bombY]!=1) gameMap[pBomb->bombX+1][pBomb->bombY] = 0;
                 if (gameMap[pBomb->bombX-1][pBomb->bombY]!=1) gameMap[pBomb->bombX-1][pBomb->bombY] = 0;
@@ -114,6 +118,7 @@ struct Input //Struct para as entradas do usuário
                 break;
 
                 case '0':
+                    isGamePaused = true; // Defina o jogo como pausado
                     map.saveMap("maps/continueMap.txt");
                     gameRunning = false; //Termina o jogo
                     menu.mainMenu();
