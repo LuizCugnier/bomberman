@@ -21,6 +21,9 @@ struct Input //Struct para as entradas do usuário
             //cout << "teste1";
             *flagbomb = true;
             gameMap[x][y] = 3;
+            inicio = clock();
+            pBomb->bombX = pPlayer->playerX;
+            pBomb->bombY = pPlayer->playerY;
         }
     }
 
@@ -107,12 +110,6 @@ struct Input //Struct para as entradas do usuário
                 break;
 
                 case 32:
-                    //Verifica se tem bomba no mapa antes de posicionar
-                    if (!bomb.flagBomb){
-                        inicio = clock();
-                        pBomb->bombX = pPlayer->playerX;
-                        pBomb->bombY = pPlayer->playerY;
-                    }
                     placeBomb(gameMap, pPlayer->playerX, pPlayer->playerY, &bomb.flagBomb);
                 break;
 
