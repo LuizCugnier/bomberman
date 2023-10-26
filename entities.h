@@ -29,7 +29,11 @@ struct Bomb //Struct para a bomba
     bool flagBomb = false; //Variável para verificar se já existe bomba
     int bombX, bombY; //localização da bomba
     clock_t savedEndTime, savedStartTime; //Variáveis para armazenar o tempo da bomba
+    bool powerUpFlag = false; //Variável para verificar se já existe power up   
 };
+
+
+
 
 
 

@@ -15,7 +15,6 @@ Enemy * pEnemy = &enemy; //Cria um ponteiro para o inimigo
 Bomb bomb; //Cria a struct da bomba
 Bomb* pBomb = &bomb; //Cria um ponteiro para a bomba
 
-
 struct Map
 {   
     //Variáveis para guardar o tamanho do mapa
@@ -140,6 +139,7 @@ struct Map
                         case 2: cout<<"#"; break; //parede quebrável
                         case 3: cout<<char(207); break; //bomba
                         case 4: cout<<"*"; break; //explosão da bomba
+                        case 5: cout<<char(224); break; // coletável aumento de explosão
                         //default: cout<<"-"; //erro
                     } //fim switch
                 }

@@ -56,8 +56,16 @@ struct Input //Struct para as entradas do usuário
     }
 
     //Função para verificar colisões no mapa
-    bool collisionCheck(int **gameMap, int x, int y) {
+    bool enemyCollisionCheck(int **gameMap, int x, int y) {
         if (gameMap[x][y] == 0 || gameMap[x][y] == 4) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    bool playerCollisionCheck(int **gameMap, int x, int y) {
+        if (gameMap[x][y] == 0 || gameMap[x][y] == 4 || gameMap[x][y] == 5) {
             return true;
         } else {
             return false;
@@ -68,17 +76,23 @@ struct Input //Struct para as entradas do usuário
     void enemyMoviments(int **gameMap, int &enemyX, int &enemyY) {
         int dir = rand() % 4; // escolhe uma direção aleatória
         
-        if (dir == 0 && collisionCheck(gameMap, enemyX - 1, enemyY)) {
+        if (dir == 0 && enemyCollisionCheck(gameMap, enemyX - 1, enemyY)) {
             enemyX--;
-        } else if (dir == 1 && collisionCheck(gameMap, enemyX + 1, enemyY)) {
+        } else if (dir == 1 && enemyCollisionCheck(gameMap, enemyX + 1, enemyY)) {
             enemyX++;
-        } else if (dir == 2 && collisionCheck(gameMap, enemyX, enemyY - 1)) {
+        } else if (dir == 2 && enemyCollisionCheck(gameMap, enemyX, enemyY - 1)) {
             enemyY--;
-        } else if (dir == 3 && collisionCheck(gameMap, enemyX, enemyY + 1)) {
+        } else if (dir == 3 && enemyCollisionCheck(gameMap, enemyX, enemyY + 1)) {
             enemyY++;
         } 
     }
     
+    void pauseGame(Map map, Menu menu, bool &gameRunning){
+        isGamePaused = true; // Defina o jogo como pausado
+        map.saveMap("maps/continueMap.txt");
+        gameRunning = false; //Termina o jogo
+        menu.mainMenu();
+    }
 
     //Função que recebe as entradas do usuário e movimenta de acordo
     void moviments(int **gameMap, bool &gameRunning, Map map, Menu menu){
@@ -88,26 +102,26 @@ struct Input //Struct para as entradas do usuário
             switch(inputKey)
             {
                 case 72: case 'w': ///cima
-                    if (collisionCheck(gameMap, pPlayer->playerX-1, pPlayer->playerY)){
+                    if (playerCollisionCheck(gameMap, pPlayer->playerX-1, pPlayer->playerY)){
                         pPlayer->playerX--;
 
                     }
                 break;
                 case 80: case 's': ///baixo
-                    if (collisionCheck(gameMap, pPlayer->playerX+1, pPlayer->playerY)){
+                    if (playerCollisionCheck(gameMap, pPlayer->playerX+1, pPlayer->playerY)){
                        pPlayer->playerX++;
 
                     }
 
                 break;
                 case 75:case 'a': ///esquerda
-                    if (collisionCheck(gameMap, pPlayer->playerX, pPlayer->playerY-1)){
+                    if (playerCollisionCheck(gameMap, pPlayer->playerX, pPlayer->playerY-1)){
                         pPlayer->playerY--;
 
                     }
                 break;
                 case 77: case 'd': ///direita
-                    if (collisionCheck(gameMap, pPlayer->playerX, pPlayer->playerY+1)) {
+                    if (playerCollisionCheck(gameMap, pPlayer->playerX, pPlayer->playerY+1)) {
                       pPlayer->playerY++;
 
                     }
@@ -118,10 +132,7 @@ struct Input //Struct para as entradas do usuário
                 break;
 
                 case '0':
-                    isGamePaused = true; // Defina o jogo como pausado
-                    map.saveMap("maps/continueMap.txt");
-                    gameRunning = false; //Termina o jogo
-                    menu.mainMenu();
+                    pauseGame(map, menu, gameRunning);
                 break;
             }
         }

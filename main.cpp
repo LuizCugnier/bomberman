@@ -11,7 +11,7 @@
 
 
 using namespace std;
-
+ 
 int main(){
 
     Game game; //Inicia a struct referente ao jogo

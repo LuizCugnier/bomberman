@@ -7,11 +7,13 @@ using namespace std;
 
 
 struct Game //Struct do jogo
-{
+{   
     bool gameRunning = true;    //Variável que indica se o jogo está rodando
     bool menuRunning = true;    //Variável para o loop principal do jogo
     bool gameStarted = false;   //Variável que indica se o jogo já começou
     string mapFile;             //Variável para guardar o arquivo do mapa 
+    clock_t pwStartTime, pwEndTime, pwTotalTime; //Variáveis para armazenar o tempo do power up
+
 
     //Loop principal do jogo
     void mainLoop(Config config, Map &map, Menu &menu, Input input){
@@ -122,6 +124,8 @@ struct Game //Struct do jogo
        
         // condição de fim : verifica se o jogador matou todos os inimigos
         gameWin(menu);
+
+        collectPowerUp(gameMap);
     }
 
     //Verifica se os inimigos morreram e se sim termina o jogo
@@ -139,6 +143,15 @@ struct Game //Struct do jogo
     void enemyHit(bool &enemyAlive, int &enemyX, int &enemyY, int **gameMap){
         if (gameMap[enemyX][enemyY] == 4) {
             enemyAlive = false;
+        }
+    }
+
+    void collectPowerUp(int **gameMap){
+        if (gameMap[pPlayer->playerX][pPlayer->playerY] == 5) {
+            pBomb->powerUpFlag = true;
+            pwStartTime = clock();
+            cout << pwStartTime;
+            gameMap[pPlayer->playerX][pPlayer->playerY] = 0;
         }
     }
 
