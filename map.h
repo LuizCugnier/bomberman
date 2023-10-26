@@ -140,6 +140,7 @@ struct Map
                         case 3: cout<<char(207); break; //bomba
                         case 4: cout<<"*"; break; //explosão da bomba
                         case 5: cout<<char(224); break; // coletável aumento de explosão
+                        case 6: cout<<char(30); break; //coletavel de aumento insano de explosão
                         //default: cout<<"-"; //erro
                     } //fim switch
                 }

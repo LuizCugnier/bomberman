@@ -9,6 +9,7 @@ struct Player //Struct para o jogador
     //Posição inicial donjogador
     int playerX, playerY;
     bool hasExplosionPowerUp = false; //Variável para verificar se o jogador tem o power up de explosão
+    bool hasInsanePowerUp = false; 
 };
 
 struct Enemy //Struct para o inimigo

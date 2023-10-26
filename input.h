@@ -20,17 +20,24 @@ struct Input //Struct para as entradas do usuário
         if (gameMap[pPlayer->playerX][pPlayer->playerY] == 5) {
             pPlayer->hasExplosionPowerUp = true;
             powerUpCollectTime = clock();
-            //cout << "\n1-" << powerUpCollectTime << endl;
             gameMap[pPlayer->playerX][pPlayer->playerY] = 0;
             return powerUpCollectTime;
         }
+
+        if (gameMap[pPlayer->playerX][pPlayer->playerY] == 6){
+            pPlayer->hasInsanePowerUp = true;
+            powerUpCollectTime = clock();
+            gameMap[pPlayer->playerX][pPlayer->playerY] = 0;
+            return powerUpCollectTime;
+        }
+        
     }
 
     void explode(int **gameMap, int x, int y) {
         gameMap[x][y] = 4;
-        if (pPlayer->hasExplosionPowerUp) {
+        if (pPlayer->hasExplosionPowerUp || pPlayer->hasInsanePowerUp) {
             // Aumente o raio da explosão aqui
-            spreadExplosion(gameMap, x, y, 2); // Raio maior (2 em vez de 1)
+            spreadExplosion(gameMap, x, y, 2); // Raio maior
         } else {
             spreadExplosion(gameMap, x, y, 1); // Raio normal
         }
@@ -38,7 +45,7 @@ struct Input //Struct para as entradas do usuário
 
     void removeExplosion(int **gameMap, int x, int y) {
         gameMap[x][y] = 0;
-        if (pPlayer->hasExplosionPowerUp) {
+        if (pPlayer->hasExplosionPowerUp || pPlayer->hasInsanePowerUp) {
             // Remova a explosão expandida
             removeSpreadExplosion(gameMap, x, y, 2); // Raio maior
         } else {
@@ -48,13 +55,18 @@ struct Input //Struct para as entradas do usuário
     }
 
     void checkPowerUpExpiration(clock_t &powerUpCollectTime) {
-        if (pPlayer->hasExplosionPowerUp && !isGamePaused) {
+        if ((pPlayer->hasExplosionPowerUp || pPlayer->hasInsanePowerUp) && !isGamePaused) {
             currentTime = clock();
             elapsedTime = (currentTime - powerUpCollectTime) / CLOCKS_PER_SEC;
             //cout << "PowerUp Timer =" << elapsedTime << endl;
             cout << currentTime << " " << powerUpCollectTime << endl;	
             if (elapsedTime >= 20.0) { // Se passaram 15 segundos
-                pPlayer->hasExplosionPowerUp = false; // Redefina o poder coletado  
+                if (pPlayer->hasExplosionPowerUp){
+                    pPlayer->hasExplosionPowerUp = false; // Redefina o poder coletado  
+                }
+                if (pPlayer->hasInsanePowerUp){
+                    pPlayer->hasInsanePowerUp = false;
+                }
                 elapsedTime = 0; // Redefina o tempo decorrido
             }
         }
@@ -65,20 +77,37 @@ struct Input //Struct para as entradas do usuário
         for (int i = 1; i <= radius; i++) {
             if (gameMap[x - i][y] == 0 || gameMap[x - i][y] == 2) {
                 gameMap[x - i][y] = 4;
-            }
+            } else if (pPlayer->hasExplosionPowerUp){
+                if (gameMap[x - i][y] == 1){
+                    break;
+                }
+            } 
+            
             if (gameMap[x + i][y] == 0 || gameMap[x + i][y] == 2) {
                 gameMap[x + i][y] = 4;
-            }
+            } else if (pPlayer->hasExplosionPowerUp){
+                if (gameMap[x + i][y] == 1){
+                    break;
+                }
+            } 
         }
 
         // Espalhe horizontalmente
         for (int i = 1; i <= radius; i++) {
             if (gameMap[x][y - i] == 0 || gameMap[x][y - i] == 2) {
                 gameMap[x][y - i] = 4;
-            }
+            } else if (pPlayer->hasExplosionPowerUp){
+                if (gameMap[x][y - i] == 1){
+                    break;
+                }
+            } 
             if (gameMap[x][y + i] == 0 || gameMap[x][y + i] == 2) {
                 gameMap[x][y + i] = 4;
-            }
+            } else if (pPlayer->hasExplosionPowerUp){
+                if (gameMap[x][y + 1] == 1){
+                    break;
+                }
+            } 
         }
     }
 
@@ -147,7 +176,7 @@ struct Input //Struct para as entradas do usuário
     }
 
     bool playerCollisionCheck(int **gameMap, int x, int y) {
-        if (gameMap[x][y] == 0 || gameMap[x][y] == 4 || gameMap[x][y] == 5) {
+        if (gameMap[x][y] == 0 || gameMap[x][y] == 4 || gameMap[x][y] == 5 || gameMap[x][y] == 6) {
             return true;
         } else {
             return false;
